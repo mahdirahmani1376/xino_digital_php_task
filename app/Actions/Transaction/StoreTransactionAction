@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Actions\Transaction;
+
+use App\Models\Invoice;
+use App\Models\Transaction;
+use App\Enums\TransactionEnum;
+
+class StoreTransactionAction {
+    public function execute(Invoice $invoice): Transaction {
+        return Transaction::query()->create([
+            'invoice_id' => $invoice->id,
+            'amount' => $invoice->amount,
+            'status' => TransactionEnum::PENDING
+        ]);
+    }
+}
