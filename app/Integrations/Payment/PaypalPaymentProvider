@@ -1,0 +1,107 @@
+<?php
+
+use App\Models\Invoice;
+use App\Models\Transaction;
+use App\Enums\TransactionEnum;
+use Illuminate\Support\Facades\Http;
+use App\Exceptions\TransactionException;
+use App\Actions\Transaction\StoreTransactionAction;
+use App\Actions\Transaction\UpdateTransactionAction;
+use App\Actions\Invoice\ProcessInvoiceAction;
+use App\Integrations\Payment\PaymentSystemInterface;
+
+class PaypalPaymentProvider implements PaymentSystemInterface
+{
+    private $baseUrl;
+    private $clientId;
+    private $clientSecret;
+    public function __construct(
+        private readonly StoreTransactionAction $storeTransactionAction,
+        private readonly UpdateTransactionAction $updateTransactionAction,
+        private readonly ProcessInvoiceAction $processInvoiceAction,
+    )
+    {
+        $this->init();
+    }
+
+    private function init()
+    {
+        $this->baseUrl = config('payment.paypal.api_url');
+        $this->clientId = config('payment.paypal.client_id');
+        $this->clientSecret = config('payment.paypal.client_secret');
+    }
+
+    public function pay(Invoice $invoice)
+    {
+        $transaction = $this->storeTransactionAction->execute($invoice);
+
+        $traceId = $this->createPayment($invoice,$transaction);
+    }
+
+    public function callBack(Transaction $transaction,Invoice $invoice,array $data)
+    {
+        if (data_get($data,'paymentId') == $transaction->trace_id) {
+
+            $this->updateTransactionAction->execute($transaction, [
+                'status' => TransactionEnum::SUCCESS
+            ]);
+
+            $invoice = $this->processInvoiceAction->execute($invoice);
+        } else {
+            $this->failTransaction($transaction);
+        }
+
+    }
+
+    private function createPayment(Invoice $Invoice,Transaction $transaction)
+    {
+        $paymentData = [
+            'intent' => 'sale',
+            'redirect_urls' => [
+                'return_url' => route('payment.success',$transaction->id),
+                'cancel_url' => route('payment.cancel',$transaction->id),
+            ],
+            'payer' => [
+                'payment_method' => 'paypal',
+            ],
+            'transactions' => [
+                [
+                    'amount' => [
+                        'total' => $transaction->amount,
+                        'currency' => 'USD',
+                    ],
+                    'description' => 'Test payment',
+                ],
+            ],
+        ];
+
+        $response = Http::withBasicAuth($this->clientId, $this->clientSecret)
+            ->post("{$this->baseUrl}/v1/payments/payment", $paymentData)->json();
+
+        $traceId = $response->json('id');
+        if (!empty($traceid)){
+
+            $this->updateTransactionAction->execute($transaction, [
+                'trace_id' => $traceId
+            ]);
+
+            return $traceId;
+        } else {
+            $this->failTransaction($transaction);
+        }
+
+
+
+    }
+
+    private function failTransaction(Transaction $transaction)
+    {
+        $this->updateTransactionAction->execute($transaction, [
+            'status' => TransactionEnum::FAILED
+        ]);
+
+        throw new TransactionException('transaction failed');
+    }
+
+
+}
