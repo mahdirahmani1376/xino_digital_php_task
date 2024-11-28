@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->index();
-            $table->string('status');
+            $table->foreignId('subscription_plan_id');
+            $table->integer('amount');
             $table->timestamps();
         });
     }
