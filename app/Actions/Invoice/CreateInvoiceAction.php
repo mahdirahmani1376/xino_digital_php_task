@@ -6,7 +6,7 @@ use App\Models\Invoice;
 
 class CreateInvoiceAction
 {
-    public function makeInvoice($data)
+    public function exectue($data)
     {
         return Invoice::create([
             'amount' => $data['amount'],

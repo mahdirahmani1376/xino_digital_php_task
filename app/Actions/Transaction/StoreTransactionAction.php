@@ -7,10 +7,10 @@ use App\Models\Transaction;
 use App\Enums\TransactionEnum;
 
 class StoreTransactionAction {
-    public function execute(Invoice $invoice): Transaction {
+    public function execute(array $data): Transaction {
         return Transaction::query()->create([
-            'invoice_id' => $invoice->id,
-            'amount' => $invoice->amount,
+            'invoice_id' => $data['id'],
+            'amount' => $data['amount'],
             'status' => TransactionEnum::PENDING
         ]);
     }
