@@ -16,15 +16,17 @@ return new class extends Migration
 
             $table
                 ->foreignId('subscription_plan_id')
+                ->index()
                 ->references('id')
                 ->on('subscription_plans')
-                ->index();
+                ->cascadeOnDelete();
 
                 $table
                 ->foreignId('user_id')
+                ->index()
                 ->references('id')
                 ->on('users')
-                ->index();
+                ->cascadeOnDelete();
 
             $table->timestamp('expired_at');
             $table->timestamps();

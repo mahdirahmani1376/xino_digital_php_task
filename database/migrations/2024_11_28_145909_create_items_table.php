@@ -13,8 +13,21 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->index();
-            $table->foreignId('subscription_plan_id');
+
+            $table
+                ->foreignId('invoice_id')
+                ->index()
+                ->references('id')
+                ->on('invoices')
+                ->cascadeOnDelete();
+                
+            $table
+                ->foreignId('subscription_plan_id')
+                ->index()
+                ->references('id')
+                ->on('subscription_plans')
+                ->cascadeOnDelete();
+
             $table->integer('amount');
             $table->timestamps();
         });

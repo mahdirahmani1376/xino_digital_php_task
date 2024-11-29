@@ -13,8 +13,16 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id');
+
+            $table
+                ->foreignId('invoice_id')
+                ->index()
+                ->references('id')
+                ->on('invoices')
+                ->cascadeOnDelete();
+
             $table->integer('amount');
+
             $table->string('trace_id')->nullable();
             $table->string('status');
             $table->timestamps();
