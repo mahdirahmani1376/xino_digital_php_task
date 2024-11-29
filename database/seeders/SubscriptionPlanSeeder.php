@@ -16,7 +16,8 @@ class SubscriptionPlanSeeder extends Seeder
         foreach ($this->plans() as $plan) {
             SubscriptionPlan::create([
                 'name' => $plan['name'],
-                'priority' => $plan['priority']
+                'priority' => $plan['priority'],
+                'price' => $plan['price']
             ]);
         }
     }
@@ -26,15 +27,19 @@ class SubscriptionPlanSeeder extends Seeder
         return [
             [
                 'name' => 'bronze',
-                'priority' => 1
+                'priority' => 1,
+                'price' => 5
             ],
             [
                 'name' => 'silver',
-                'priority' => 2
+                'priority' => 2,
+                'price' => 10
+
             ],
             [
                 'name' => 'gold',
-                'priority' => 3
+                'priority' => 3,
+                'price' => 20
             ]
             ];
     }
