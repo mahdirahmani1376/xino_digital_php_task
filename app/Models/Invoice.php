@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property mixed $amount
- * @property mixed $amount
  * @property mixed $user_id
  */
 class Invoice extends Model

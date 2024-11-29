@@ -6,9 +6,13 @@ use App\Models\SubscriptionPlan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property $subscription_plan_id
+ * @property $user_id
+ * @property $expired_at
+ */
 class Subscription extends Model
 {
-
     public $fillable = [
         "subscription_plan_id",
         "user_id",
