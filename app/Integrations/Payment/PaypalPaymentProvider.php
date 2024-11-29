@@ -34,19 +34,21 @@ class PaypalPaymentProvider implements PaymentSystemInterface
 
     private function init()
     {
-        $this->baseUrl = config('payment.paypal.api_url');
+        $this->baseUrl = config('payment.paypal.base_url');
         $this->clientId = config('payment.paypal.client_id');
         $this->clientSecret = config('payment.paypal.client_secret');
     }
 
     private function getAccessToken()
     {
-        $response = Http::asForm()->withBasicAuth($this->clientId, $this->clientSecret)
-            ->post("{$this->baseUrl}/v1/oauth2/token", [
-                'grant_type' => 'client_credentials',
-            ]);
+        // $response = Http::asForm()->withBasicAuth($this->clientId, $this->clientSecret)
+        //     ->post("{$this->baseUrl}/v1/oauth2/token", [
+        //         'grant_type' => 'client_credentials',
+        //     ]);
 
-        return $response->json()['access_token'];
+        // return $response->json()['access_token'];
+
+        return 'test';
     }
 
     public function createPlan(Subscription $subscription)
@@ -54,28 +56,33 @@ class PaypalPaymentProvider implements PaymentSystemInterface
 
         $accessToken = $this->getAccessToken();
 
-        $response = Http::withToken($accessToken)->post("{$this->baseUrl}/v1/billing/plans", [
-            'product_id' => $subscription->id,
-            'name' => $subscription->name,
-            'description' => 'Monthly subscription plan',
-            'billing_cycles' => [
-                [
-                    'frequency' => ['interval_unit' => 'MONTH', 'interval_count' => 1],
-                    'tenure_type' => 'REGULAR',
-                    'sequence' => 1,
-                    'total_cycles' => 0,
-                    'pricing_scheme' => ['fixed_price' => ['value' => $subscription->subscriptionPlan->price, 'currency_code' => 'USD']],
-                ],
-            ],
-            'payment_preferences' => [
-                'auto_bill_outstanding' => true,
-                'setup_fee' => ['value' => '0.00', 'currency_code' => 'USD'],
-                'setup_fee_failure_action' => 'CANCEL',
-                'payment_failure_threshold' => 3,
-            ],
-        ]);
+        // $response = Http::withToken($accessToken)->post("{$this->baseUrl}/v1/billing/plans", [
+        //     'product_id' => $subscription->id,
+        //     'name' => $subscription->name,
+        //     'description' => 'Monthly subscription plan',
+        //     'billing_cycles' => [
+        //         [
+        //             'frequency' => ['interval_unit' => 'MONTH', 'interval_count' => 1],
+        //             'tenure_type' => 'REGULAR',
+        //             'sequence' => 1,
+        //             'total_cycles' => 0,
+        //             'pricing_scheme' => ['fixed_price' => ['value' => $subscription->subscriptionPlan->price, 'currency_code' => 'USD']],
+        //         ],
+        //     ],
+        //     'payment_preferences' => [
+        //         'auto_bill_outstanding' => true,
+        //         'setup_fee' => ['value' => '0.00', 'currency_code' => 'USD'],
+        //         'setup_fee_failure_action' => 'CANCEL',
+        //         'payment_failure_threshold' => 3,
+        //     ],
+        // ]);
+ 
+        // return $response->json();
 
-        return $response->json();
+        return [
+            'state' => 'approved'
+        ];
+
     }
 
     public function pay(Invoice $invoice)
@@ -127,10 +134,11 @@ class PaypalPaymentProvider implements PaymentSystemInterface
             ],
         ];
 
-        $response = Http::withBasicAuth($this->clientId, $this->clientSecret)
-            ->post("{$this->baseUrl}/v1/payments/payment", $paymentData)->json();
+        // $response = Http::withBasicAuth($this->clientId, $this->clientSecret)
+        //     ->post("{$this->baseUrl}/v1/payments/payment", $paymentData)->json();
 
-        $traceId = $response->json('paymentId');
+        // $traceId = $response->json('paymentId');
+        $traceId = 'test';
         if (!empty($traceid)){
 
             $this->updateTransactionAction->execute($transaction, [

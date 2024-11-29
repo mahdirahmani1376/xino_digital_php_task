@@ -32,37 +32,17 @@ class SectionSeeder extends Seeder
         
         $sections = [
             [
-                'name' => 'Access to All Courses	',
+                'name' => 'view_course',
                 'subscription_plan_id' => $bronze
             ],
             [
-                'name' => 'Downloadable Materials	',
+                'name' => 'download_course',
                 'subscription_plan_id' => $silver
             ],
             [
-                'name' => 'Mentorship',
+                'name' => 'send_direct_messages_to_mentor',
                 'subscription_plan_id' => $gold
-            ],
-            [
-                'name' => 'Exclusive Webinars/Workshops	',
-                'subscription_plan_id' => $gold
-            ],
-            [
-                'name' => 'Certificate of Completion	',
-                'subscription_plan_id' => $bronze
-            ],
-            [
-                'name' => 'Priority Customer Support	',
-                'subscription_plan_id' => $gold
-            ],
-            [
-                'name' => 'Early Access to New Courses	',
-                'subscription_plan_id' => $silver
-            ],
-            [
-                'name' => 'Access to Live Sessions	',
-                'subscription_plan_id' => $silver
-            ],
+            ]
         ];
 
         return $sections;

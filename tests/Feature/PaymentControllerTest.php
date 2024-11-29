@@ -46,4 +46,19 @@ class PaymentControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_create_plan(): void
+    {
+        $subscription = Subscription::factory()->create();
+        $subscription->user->update([
+            'subscription_id' => $subscription->id
+        ]);
+
+        $response = $this->postJson(route('payment.create-plan',[
+            'subscription_id' => $subscription->id,
+        ]));
+
+        $response->assertStatus(200);
+
+    }
 }

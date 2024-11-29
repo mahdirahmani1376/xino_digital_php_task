@@ -56,6 +56,6 @@ class User extends Authenticatable
 
     public function subscription(): BelongsTo
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsTo(Subscription::class,'subscription_id');
     }
 }
