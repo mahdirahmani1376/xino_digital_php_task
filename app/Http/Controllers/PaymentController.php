@@ -42,13 +42,16 @@ class PaymentController extends Controller
 
     public function webhook(Request $request,PaymentSystemInterface $paymentSystem)
     {
-        $event = $request->all();
+        $event = $request->validate([
+            'id' => ['required'],
+            'paymentId' => ['required']
+        ]);
 
         $subscription = Subscription::where([
             'id' => $event['id']
         ])->firstOrFail();
 
-        $subscription = $paymentSystem->autoRenewSubscription($subscription);
+        $subscription = $paymentSystem->autoRenewSubscription($subscription,$event);
 
         return response()->json($subscription);
     }

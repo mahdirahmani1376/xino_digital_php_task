@@ -10,7 +10,7 @@ class CreateInvoiceAction
     {
         return Invoice::create([
             'amount' => $data['amount'],
-            'user' => $data['user'],
+            'user_id' => $data['user_id'],
             'status' => $data['status'],
         ]);
     }

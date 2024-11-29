@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Integrations\Payment;
+
 use App\Models\Invoice;
 use App\Enums\InvoiceEnum;
 use App\Models\Transaction;
@@ -81,7 +83,8 @@ class PaypalPaymentProvider implements PaymentSystemInterface
         $transaction = $this->storeTransactionAction->execute([
             'invoice_id' => $invoice->id,
             'amount' => $invoice->amount,
-            'trace_id' => null
+            'trace_id' => null,
+            'status' => TransactionEnum::PENDING
         ]);
 
         $traceId = $this->createPayment($transaction);
@@ -151,21 +154,21 @@ class PaypalPaymentProvider implements PaymentSystemInterface
 
     }
 
-    public function autoRenewSubscription(Subscription $subscription)
+    public function autoRenewSubscription(Subscription $subscription,array $event)
     {
-
         $subscriptionPlan = $subscription->subscriptionPlan;
 
         $invoice = app(CreateInvoiceAction::class)->exectue([
-            'amount' => $subscriptionPlan->amount,
-            'user' => $subscription->user->id,
+            'amount' => $subscriptionPlan->price,
+            'user_id' => $subscription->user->id,
             'status' => InvoiceEnum::PAID
         ]);
 
         $transaction = app(StoreTransactionAction::class)->execute([
             'invoice_id' => $invoice->id,
             'amount' => $invoice->amount,
-            'status' => TransactionEnum::SUCCESS
+            'status' => TransactionEnum::SUCCESS,
+            'trace_id' => $event['paymentId']
         ]);
 
         $item = app(CreateItemAction::class)->execute([

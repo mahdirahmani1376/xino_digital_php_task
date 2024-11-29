@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,12 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property mixed $amount
  * @property mixed $user_id
+ * @property mixed $status
  */
 class Invoice extends Model
 {
+    use HasFactory;
     public $fillable = [
         'amount',
         'user_id',
+        'status'
     ];
 
     public function items(): HasMany
