@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('invoice_id');
             $table->integer('amount');
-            $table->string('trace_id');
+            $table->string('trace_id')->nullable();
             $table->timestamps();
         });
     }
