@@ -1,8 +1,8 @@
 <?php
 namespace App\Enums;
-enum TransactionEnum {
-    case PENDING;
-    case FAILED;
-    case SUCCESS;
+enum TransactionEnum: string {
+    case PENDING  = 'PENDING';
+    case FAILED = 'FAILED';
+    case SUCCESS = 'SUCCESS';
 
 }
