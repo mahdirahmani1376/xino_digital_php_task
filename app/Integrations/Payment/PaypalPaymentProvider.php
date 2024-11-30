@@ -87,7 +87,7 @@ class PaypalPaymentProvider implements PaymentSystemInterface
 
     public function pay(Invoice $invoice)
     {
-        $transaction = $this->storeTransactionAction->execute([
+        $transaction = ($this->storeTransactionAction)([
             'invoice_id' => $invoice->id,
             'amount' => $invoice->amount,
             'trace_id' => null,
@@ -175,7 +175,7 @@ class PaypalPaymentProvider implements PaymentSystemInterface
             'status' => InvoiceEnum::PAID
         ]);
 
-        $transaction = app(StoreTransactionAction::class)->execute([
+        $transaction = app(StoreTransactionAction::class)([
             'invoice_id' => $invoice->id,
             'amount' => $invoice->amount,
             'status' => TransactionEnum::SUCCESS,

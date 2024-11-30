@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Invoice\CreateInvoiceAction;
+use App\Actions\Invoice\PayInvoiceAction;
 use App\Actions\Item\CreateItemAction;
 use App\Enums\InvoiceEnum;
 use App\Http\Requests\StoreInvoiceRequest;
@@ -42,11 +43,11 @@ class InvoiceController extends Controller
      *  this routes gives a trace_id to fron-end of the site
      *  then the front-end will redirect the user to the payment gateway for the payment
      */
-    public function pay(Invoice $invoice,PaymentSystemInterface $paymentSystem)
+    public function pay(Invoice $invoice,PayInvoiceAction $payInvoiceAction)
     {
         return response()->json(
             [
-                'redirect_url' => $paymentSystem->pay($invoice,)
+                'redirect_url' => $payInvoiceAction($invoice)
             ]
         );
     }

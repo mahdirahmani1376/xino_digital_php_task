@@ -7,7 +7,7 @@ use App\Models\Transaction;
 use App\Enums\TransactionEnum;
 
 class StoreTransactionAction {
-    public function execute(array $data): Transaction {
+    public function __invoke(array $data): Transaction {
         return Transaction::query()->create([
             'invoice_id' => $data['invoice_id'],
             'amount' => $data['amount'],

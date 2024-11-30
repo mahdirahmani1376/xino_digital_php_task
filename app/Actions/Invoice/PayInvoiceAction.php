@@ -13,12 +13,13 @@ class PayInvoiceAction {
     ){}
 
 
-    public function pay(Invoice $invoice)
+    public function __invoke(Invoice $invoice)
     {
-        $transaction = $this->storeTransactionAction->execute([
+        $transaction = ($this->storeTransactionAction)([
             "invoice_id" => $invoice->id,
             "amount" => $invoice->amount,
             "status" => TransactionEnum::PENDING,
+            "trace_id" => null
         ]);
 
         $status = $this->paymentSystem->pay($invoice);

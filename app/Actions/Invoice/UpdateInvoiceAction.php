@@ -6,7 +6,7 @@ use App\Models\Invoice;
 
 class UpdateInvoiceAction
 {
-    public function execute(Invoice $invoice, array $data)
+    public function __invoke(Invoice $invoice, array $data)
     {
         $invoice->update($data);
 

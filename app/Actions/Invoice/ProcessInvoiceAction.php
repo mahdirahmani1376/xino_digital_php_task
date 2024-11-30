@@ -20,7 +20,7 @@ class ProcessInvoiceAction {
     }
     public function __invoke(Invoice $invoice): Invoice
     {
-        $this->updateInvoiceAction->execute($invoice,[
+        ($this->updateInvoiceAction)($invoice,[
             'status' => InvoiceEnum::PAID
         ]);
 
