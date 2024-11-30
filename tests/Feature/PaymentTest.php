@@ -76,8 +76,6 @@ class PaymentTest extends TestCase
             'subscription_plan_id' => $subPlan->id,
         ]));
 
-        dump($response->json());
-
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('invoices', [
