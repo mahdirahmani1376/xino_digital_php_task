@@ -20,9 +20,12 @@ class PaymentController extends Controller
                 'paymentId' => ['required','exists:transactions,trace_id'],
             ]);
 
-        $invoice = $paymentSystem->successfulCallbackPayment($data);
 
-        return response()->json($invoice);
+        $paymentSystem->successfulCallbackPayment($data);
+
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 
     public function cancel(
