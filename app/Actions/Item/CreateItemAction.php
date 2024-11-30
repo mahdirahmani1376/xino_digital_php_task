@@ -6,7 +6,7 @@ use App\Models\Item;
 
 class CreateItemAction
 {
-    public function execute(array $data): Item
+    public function __invoke(array $data): Item
     {
         return Item::create([
             "subscription_plan_id" => $data['subscription_plan_id'],

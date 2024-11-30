@@ -11,7 +11,7 @@ class CreateSubscriptionAction
         return Subscription::create([
             "subscription_plan_id" => $data['subscription_plan_id'],
             "user_id" => $data['user_id'],
-            "expired_at" => $data['expired_at'],
+            "expired_at" => now()->addMonth(),
         ]);
     }
 }

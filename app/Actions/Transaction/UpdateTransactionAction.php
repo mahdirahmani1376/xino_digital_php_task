@@ -7,7 +7,7 @@ use App\Models\Transaction;
 use App\Enums\TransactionEnum;
 
 class UpdateTransactionAction {
-    public function execute(Transaction $transaction,array $data): Transaction {
+    public function __invoke(Transaction $transaction,array $data): Transaction {
         $transaction->update($data);
         return $transaction;
     }
