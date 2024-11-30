@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\SubscriptionPlan;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SubscriptionPlanSeeder extends Seeder
@@ -17,7 +16,7 @@ class SubscriptionPlanSeeder extends Seeder
             SubscriptionPlan::create([
                 'name' => $plan['name'],
                 'priority' => $plan['priority'],
-                'price' => $plan['price']
+                'price' => $plan['price'],
             ]);
         }
     }
@@ -28,19 +27,19 @@ class SubscriptionPlanSeeder extends Seeder
             [
                 'name' => 'bronze',
                 'priority' => 1,
-                'price' => 5
+                'price' => 5,
             ],
             [
                 'name' => 'silver',
                 'priority' => 2,
-                'price' => 10
+                'price' => 10,
 
             ],
             [
                 'name' => 'gold',
                 'priority' => 3,
-                'price' => 20
-            ]
-            ];
+                'price' => 20,
+            ],
+        ];
     }
 }

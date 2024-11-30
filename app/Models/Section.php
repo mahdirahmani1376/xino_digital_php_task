@@ -12,11 +12,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Section extends Model
 {
     protected $fillable = [
-        "name",
-        "subscription_plan_id",
+        'name',
+        'subscription_plan_id',
     ];
-    public function subscriptionPlan(): BelongsTo  
+
+    public function subscriptionPlan(): BelongsTo
     {
-        return $this->belongsTo(SubscriptionPlan::class,'subscription_plan_id');
+        return $this->belongsTo(SubscriptionPlan::class, 'subscription_plan_id');
     }
 }

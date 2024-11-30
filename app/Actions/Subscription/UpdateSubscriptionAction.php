@@ -6,7 +6,7 @@ use App\Models\Subscription;
 
 class UpdateSubscriptionAction
 {
-    public function __invoke(Subscription $subscription,array $data)
+    public function __invoke(Subscription $subscription, array $data)
     {
         $subscription->update($data);
 

@@ -20,7 +20,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('invoices')
                 ->cascadeOnDelete();
-                
+
             $table
                 ->foreignId('subscription_plan_id')
                 ->index()

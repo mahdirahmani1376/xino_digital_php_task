@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Integrations\Payment\PaymentSystemInterface;
 use App\Integrations\Payment\PaypalPaymentProvider;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(PaymentSystemInterface::class,PaypalPaymentProvider::class);
+        $this->app->bind(PaymentSystemInterface::class, PaypalPaymentProvider::class);
     }
 }

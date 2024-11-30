@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\InvoiceEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreInvoiceRequest extends FormRequest
 {
@@ -24,7 +22,7 @@ class StoreInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subscription_plan_id' => ['required','exists:subscription_plans,id'],
+            'subscription_plan_id' => ['required', 'exists:subscription_plans,id'],
         ];
     }
 }

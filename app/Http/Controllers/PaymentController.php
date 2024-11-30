@@ -2,40 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
+use App\Integrations\Payment\PaymentSystemInterface;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
-use App\Integrations\Payment\PaymentSystemInterface;
-use Illuminate\Validation\Rule;
 
 class PaymentController extends Controller
 {
     public function success(
         Request $request,
         PaymentSystemInterface $paymentSystem,
-        )
-    {
+    ) {
         $data = $request->validate(
             [
-                'paymentId' => ['required','exists:transactions,trace_id'],
+                'paymentId' => ['required', 'exists:transactions,trace_id'],
             ]);
-
 
         $paymentSystem->successfulCallbackPayment($data);
 
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
         ]);
     }
 
     public function cancel(
         Request $request,
         PaymentSystemInterface $paymentSystem,
-        )
-    {
+    ) {
         $data = $request->validate(
             [
-                'paymentId' => ['required','exists:transactions,trace_id'],
+                'paymentId' => ['required', 'exists:transactions,trace_id'],
             ]);
 
         $invoice = $paymentSystem->cancelCallbackPayment($data);
@@ -43,29 +38,28 @@ class PaymentController extends Controller
         return response()->json($invoice);
     }
 
-    public function webhook(Request $request,PaymentSystemInterface $paymentSystem)
+    public function webhook(Request $request, PaymentSystemInterface $paymentSystem)
     {
         $event = $request->validate([
             'id' => ['required'],
-            'paymentId' => ['required']
+            'paymentId' => ['required'],
         ]);
 
         $subscription = Subscription::where([
-            'id' => $event['id']
+            'id' => $event['id'],
         ])->firstOrFail();
 
-        $subscription = $paymentSystem->autoRenewSubscription($subscription,$event);
+        $subscription = $paymentSystem->autoRenewSubscription($subscription, $event);
 
         return response()->json($subscription);
     }
 
-    public function createPlan(Subscription $subscription,PaymentSystemInterface $paymentSystem)
+    public function createPlan(Subscription $subscription, PaymentSystemInterface $paymentSystem)
     {
         $paymentSystem->createPlan($subscription);
 
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
         ]);
     }
-
 }

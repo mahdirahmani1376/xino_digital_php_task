@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class CourseController extends Controller
 {
     public function seeCourse()
     {
         // implement see course action or other bussiness logic
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
         ]);
     }
 
@@ -18,7 +16,7 @@ class CourseController extends Controller
     {
         // implement download course action or other bussiness logic
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
         ]);
     }
 
@@ -26,7 +24,7 @@ class CourseController extends Controller
     {
         // implement send direct message action or other bussiness logic
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
         ]);
     }
 }

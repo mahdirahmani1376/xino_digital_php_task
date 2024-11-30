@@ -18,8 +18,8 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'amount' => $this->faker->numberBetween(0,1000),
-            'user_id' => User::factory()
+            'amount' => $this->faker->numberBetween(0, 1000),
+            'user_id' => User::factory(),
         ];
     }
 }

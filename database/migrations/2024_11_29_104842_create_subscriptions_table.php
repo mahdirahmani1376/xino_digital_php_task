@@ -21,7 +21,7 @@ return new class extends Migration
                 ->on('subscription_plans')
                 ->cascadeOnDelete();
 
-                $table
+            $table
                 ->foreignId('user_id')
                 ->index()
                 ->references('id')

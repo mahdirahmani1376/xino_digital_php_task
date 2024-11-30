@@ -19,9 +19,9 @@ class SubscriptionFactory extends Factory
     public function definition(): array
     {
         return [
-            "subscription_plan_id" => SubscriptionPlan::inRandomOrder()->first()->id,
-            "user_id" => User::factory(),
-            "expired_at" => now()->addMonth(),
+            'subscription_plan_id' => SubscriptionPlan::inRandomOrder()->first()->id,
+            'user_id' => User::factory(),
+            'expired_at' => now()->addMonth(),
         ];
     }
 }

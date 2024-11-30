@@ -12,16 +12,15 @@ class SubscriptionController extends Controller
         Request $request,
         CreateSubscriptionAction $createSubscriptionAction,
         CreateInvoiceAction $createInvoiceAction
-        )
-    {
+    ) {
         $data = $request->validate([
-            'subscription_plan_id' => ['required','exists:subscription_plans,id']
+            'subscription_plan_id' => ['required', 'exists:subscription_plans,id'],
         ]);
 
         $data['user_id'] = auth()->user()->id;
 
         $subscription = $createSubscriptionAction($data);
- 
+
         return response()->json(
             $createSubscriptionAction($data)
         );

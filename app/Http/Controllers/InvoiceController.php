@@ -7,10 +7,8 @@ use App\Actions\Invoice\PayInvoiceAction;
 use App\Actions\Item\CreateItemAction;
 use App\Enums\InvoiceEnum;
 use App\Http\Requests\StoreInvoiceRequest;
-use App\Integrations\Payment\PaymentSystemInterface;
 use App\Models\Invoice;
 use App\Models\SubscriptionPlan;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
@@ -24,14 +22,13 @@ class InvoiceController extends Controller
         StoreInvoiceRequest $request,
         CreateInvoiceAction $createInvoiceAction,
         CreateItemAction $createItemAction
-        )
-    {
+    ) {
         $data = $this->prepareDataForStore($request->validated());
         $invoice = $createInvoiceAction($data);
         $item = $createItemAction([
-            "subscription_plan_id" => $data['subscription_plan_id'],
-            "amount" => $invoice->amount,
-            "invoice_id" => $invoice->id,
+            'subscription_plan_id' => $data['subscription_plan_id'],
+            'amount' => $invoice->amount,
+            'invoice_id' => $invoice->id,
         ]);
 
         return response()->json(
@@ -43,11 +40,11 @@ class InvoiceController extends Controller
      *  this routes gives a trace_id to fron-end of the site
      *  then the front-end will redirect the user to the payment gateway for the payment
      */
-    public function pay(Invoice $invoice,PayInvoiceAction $payInvoiceAction)
+    public function pay(Invoice $invoice, PayInvoiceAction $payInvoiceAction)
     {
         return response()->json(
             [
-                'redirect_url' => $payInvoiceAction($invoice)
+                'redirect_url' => $payInvoiceAction($invoice),
             ]
         );
     }
@@ -55,10 +52,9 @@ class InvoiceController extends Controller
     private function prepareDataForStore($data)
     {
         $data['user_id'] = Auth::id();
-        $data['amount'] = SubscriptionPlan::firstWhere('id',$data['subscription_plan_id'])->price;
+        $data['amount'] = SubscriptionPlan::firstWhere('id', $data['subscription_plan_id'])->price;
         $data['status'] = InvoiceEnum::UNPAID;
 
         return $data;
     }
-
 }
