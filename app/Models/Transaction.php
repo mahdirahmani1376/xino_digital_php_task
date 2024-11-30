@@ -20,7 +20,7 @@ class Transaction extends Model
         'trace_id'
     ];
 
-    public function invoice(Invoice $invoice): BelongsTo
+    public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class,'invoice_id');
     }

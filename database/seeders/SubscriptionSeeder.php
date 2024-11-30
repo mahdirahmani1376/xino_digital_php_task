@@ -23,7 +23,6 @@ class SubscriptionSeeder extends Seeder
             $subscription = app(CreateSubscriptionAction::class)([
                 "subscription_plan_id" => $subscriptionPlans->random()->id,
                 "user_id" => $user->id,
-                "expired_at" => now()->addMonth(),
             ]);
             $user->update([
                 'subscription_id' => $subscription->id

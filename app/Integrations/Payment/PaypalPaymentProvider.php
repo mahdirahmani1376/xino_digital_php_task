@@ -95,15 +95,19 @@ class PaypalPaymentProvider implements PaymentSystemInterface
         ]);
 
         $traceId = $this->createPayment($transaction);
+
+        return $this->baseUrl .'/payment.' . $traceId;
     }
     public function successfulCallbackPayment(array $data)
     {
         $transaction = Transaction::where('trace_id',$data['paymentId'])->first();
-        $this->updateTransactionAction->execute($transaction, [
+
+        ($this->updateTransactionAction)($transaction, [
             'status' => TransactionEnum::SUCCESS
         ]);
 
-        $invoice = $this->processInvoiceAction->execute($transaction->invoice);
+        $invoice = ($this->processInvoiceAction)($transaction->invoice);
+        
     }
 
     public function cancelCallbackPayment(array $data)
@@ -139,15 +143,14 @@ class PaypalPaymentProvider implements PaymentSystemInterface
 
         // $traceId = $response->json('paymentId');
         $traceId = 'test';
-        if (!empty($traceid)){
-
-            $this->updateTransactionAction->execute($transaction, [
+        if ($traceId){
+            ($this->updateTransactionAction)($transaction, [
                 'trace_id' => $traceId
             ]);
 
             return $traceId;
         } else {
-            $this->failTransaction($transaction);
+            return $this->failTransaction($transaction);
         }
 
 
@@ -156,7 +159,7 @@ class PaypalPaymentProvider implements PaymentSystemInterface
 
     private function failTransaction(Transaction $transaction)
     {
-        $this->updateTransactionAction->execute($transaction, [
+        ($this->updateTransactionAction)($transaction, [
             'status' => TransactionEnum::FAILED
         ]);
 
@@ -166,7 +169,7 @@ class PaypalPaymentProvider implements PaymentSystemInterface
     {
         $subscriptionPlan = $subscription->subscriptionPlan;
 
-        $invoice = app(CreateInvoiceAction::class)->exectue([
+        $invoice = app(CreateInvoiceAction::class)([
             'amount' => $subscriptionPlan->price,
             'user_id' => $subscription->user->id,
             'status' => InvoiceEnum::PAID
@@ -179,7 +182,7 @@ class PaypalPaymentProvider implements PaymentSystemInterface
             'trace_id' => $event['paymentId']
         ]);
 
-        $item = app(CreateItemAction::class)->execute([
+        $item = app(CreateItemAction::class)([
             'subscription_plan_id' => $subscriptionPlan->id,
             'amount' => $subscriptionPlan->price,
             'invoice_id' => $invoice->id,
