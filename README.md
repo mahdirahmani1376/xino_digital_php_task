@@ -8,14 +8,11 @@ which will alow users to access different sections
 ## Setup
 - clone the repo and run the following commands
 ```sh
-composer install
 cp .env .env.example
-```
-- fill your database credentials for the mysql connection
-- for the testing env an sqlite database is used
-```sh
-php artisan migrate --seed
-php artisan test
+docker compose up -d --build
+docker exec -it xino_digital_php_task-php-1 composer install
+docker exec -it xino_digital_php_task-php-1 php artisan migrate --seed
+docker exec -it xino_digital_php_task-php-1 php artisan test
 ```
 ## How to test the application in PostMan
 1. Login the User via the "User/Login" request
