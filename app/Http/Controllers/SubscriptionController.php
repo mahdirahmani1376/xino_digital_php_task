@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
             'subscription_plan_id' => ['required', 'exists:subscription_plans,id'],
         ]);
 
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = $request()->user()->id;
 
         $subscription = $createSubscriptionAction($data);
 

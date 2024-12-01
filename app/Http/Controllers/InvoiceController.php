@@ -9,7 +9,6 @@ use App\Enums\InvoiceEnum;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Models\Invoice;
 use App\Models\SubscriptionPlan;
-use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -51,7 +50,7 @@ class InvoiceController extends Controller
 
     private function prepareDataForStore($data)
     {
-        $data['user_id'] = Auth::id();
+        $data['user_id'] = request()->user()->id;
         $data['amount'] = SubscriptionPlan::firstWhere('id', $data['subscription_plan_id'])->price;
         $data['status'] = InvoiceEnum::UNPAID;
 

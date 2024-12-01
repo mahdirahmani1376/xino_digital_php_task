@@ -13,6 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $postmanTestUser = User::factory()->create([
+            'email' => 'test@test.com',
+            'password' => '1234',
+            'subscription_id' => null,
+        ]);
+
         User::factory(20)->create();
 
         $this->call([

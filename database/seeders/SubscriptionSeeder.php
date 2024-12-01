@@ -26,5 +26,6 @@ class SubscriptionSeeder extends Seeder
                 'subscription_id' => $subscription->id,
             ]);
         }
+
     }
 }

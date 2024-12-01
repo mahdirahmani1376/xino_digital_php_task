@@ -33,9 +33,11 @@ class PaymentController extends Controller
                 'paymentId' => ['required', 'exists:transactions,trace_id'],
             ]);
 
-        $invoice = $paymentSystem->cancelCallbackPayment($data);
+        $paymentSystem->cancelCallbackPayment($data);
 
-        return response()->json($invoice);
+        return response()->json([
+            'message' => 'transaction cancelled',
+        ]);
     }
 
     public function webhook(Request $request, PaymentSystemInterface $paymentSystem)
@@ -54,8 +56,12 @@ class PaymentController extends Controller
         return response()->json($subscription);
     }
 
-    public function createPlan(Subscription $subscription, PaymentSystemInterface $paymentSystem)
+    public function createPlan(Request $request, PaymentSystemInterface $paymentSystem)
     {
+        $subscription = Subscription::where([
+            'id' => $request->subscription_id,
+        ])->firstOrFail();
+
         $paymentSystem->createPlan($subscription);
 
         return response()->json([

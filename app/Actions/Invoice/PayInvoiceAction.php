@@ -23,7 +23,7 @@ class PayInvoiceAction
             'trace_id' => null,
         ]);
 
-        $status = $this->paymentSystem->pay($invoice);
+        return $this->paymentSystem->pay($invoice);
 
     }
 }
