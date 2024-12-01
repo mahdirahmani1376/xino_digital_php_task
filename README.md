@@ -14,6 +14,8 @@ docker exec -it xino_digital_php_task-php-1 composer install
 docker exec -it xino_digital_php_task-php-1 php artisan migrate --seed
 docker exec -it xino_digital_php_task-php-1 php artisan test
 ```
+## Postman link
+https://bold-flare-461955.postman.co/workspace/Xino_digital~be63f704-47c3-4854-b3a1-7bd4e916c1c4/collection/13855626-56accefe-20f0-465f-8806-a29fff7cec7a?action=share&creator=13855626
 ## How to test the application in PostMan
 1. Login the User via the "User/Login" request the Token global variable will be set autolatically on all other requests2. Create an invoice with the "Invoice/Store" request
 3. Pay the Created Invoice with the "Invoice/Pay" request
