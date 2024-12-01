@@ -13,6 +13,22 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+
+            $table
+                ->foreignId('subscription_plan_id')
+                ->index()
+                ->references('id')
+                ->on('subscription_plans')
+                ->cascadeOnDelete();
+
+            $table
+                ->foreignId('user_id')
+                ->index()
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
+
+            $table->timestamp('expired_at');
             $table->timestamps();
         });
     }

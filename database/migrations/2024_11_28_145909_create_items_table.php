@@ -11,14 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table
+                ->foreignId('invoice_id')
+                ->index()
+                ->references('id')
+                ->on('invoices')
+                ->cascadeOnDelete();
+
             $table
                 ->foreignId('subscription_plan_id')
+                ->index()
                 ->references('id')
                 ->on('subscription_plans')
-                ->index();
+                ->cascadeOnDelete();
+
+            $table->integer('amount');
             $table->timestamps();
         });
     }
@@ -28,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('items');
     }
 };

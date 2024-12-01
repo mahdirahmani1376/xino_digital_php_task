@@ -13,11 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $postmanTestUser = User::factory()->create([
+            'email' => 'test@test.com',
+            'password' => '1234',
+            'subscription_id' => null,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::factory(20)->create();
+
+        $this->call([
+            SubscriptionPlanSeeder::class,
+            SectionSeeder::class,
+            SubscriptionSeeder::class,
         ]);
     }
 }

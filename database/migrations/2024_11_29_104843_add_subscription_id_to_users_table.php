@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::table('users', function (Blueprint $table) {
             $table
-                ->foreignId('subscription_plan_id')
+                ->foreignId('subscription_id')
+                ->nullable()
+                ->index()
                 ->references('id')
-                ->on('subscription_plans')
-                ->index();
-            $table->timestamps();
+                ->on('users')
+                ->cascadeOnDelete();
         });
     }
 
@@ -28,6 +27,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sections');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('subscription_id');
+        });
     }
 };
